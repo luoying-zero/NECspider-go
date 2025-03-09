@@ -9,9 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Go environment
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.21.6'
       - run: |
+          chmod +x colly-for-netcloud_amd64
           ./colly-for-netcloud_amd64 100 200 -p 50
