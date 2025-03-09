@@ -58,7 +58,7 @@ func main() {
 	// 错误处理
 	c.OnError(func(r *colly.Response, err error) {
 		ur := r.Request.URL.String()
-		fmt.Println(errn, "Error URL:", ur)
+		fmt.Println(err, "Error URL:", ur)
 		// exec.Command("cmd", "/c", "start", ur).Start()
 		errn = errn + 1
 	})
