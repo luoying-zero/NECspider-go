@@ -11,4 +11,4 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           chmod +x colly-for-netcloud_amd64
-          ./colly-for-netcloud_amd64 100 200 -p 50
+          ./colly-for-netcloud_amd64 10000 20000 -p 200
