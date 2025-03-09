@@ -1,4 +1,4 @@
-package CollyforNetcloud
+package main
 
 import (
 	"fmt"
