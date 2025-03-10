@@ -29,10 +29,10 @@ jobs:
         env:
           GOOS: android
           GOARCH: arm64
-          CC : "$ndk-path/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang"
-          CXX: "$ndk-path/toolchains/llvm/prebuilt/linux-x86_64//bin/aarch64-linux-android28-clang++"
+          CC : "$NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang"
+          CXX: "$NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64//bin/aarch64-linux-android28-clang++"
         run: |
-          echo $ndk-path
+          echo $NDK_HOME
           go build -o "colly-for-netcloud" -trimpath -ldflags "$LD_FLAGS" .
       - name: Upload artifact
         uses: actions/upload-artifact@v4
