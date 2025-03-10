@@ -1,11 +1,11 @@
-name: fm
+name: fmt
 
 on: 
   workflow_dispatch:
   
 jobs:
   build:
-    name: collying
+    name: format codes
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
