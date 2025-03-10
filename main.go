@@ -1,12 +1,12 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"strconv"
-	"flag"
 	// "os/exec"
-	"time"
 	"github.com/gocolly/colly"
+	"time"
 )
 
 func main() {
@@ -14,25 +14,25 @@ func main() {
 	var pam int
 	// errn := 0
 	var sli []string
-	
+
 	flag.IntVar(&pam, "p", 50, "设置并发量")
 
-    // 解析标志参数
-    flag.Parse()
+	// 解析标志参数
+	flag.Parse()
 
-    // 处理位置参数（非标志参数）
-    if len(flag.Args()) < 2 {
-        fmt.Println("缺少范围")
-        return
-    }
-    
-    num1, err1 := strconv.Atoi(flag.Args()[0])
-    num2, err2 := strconv.Atoi(flag.Args()[1])
-    if err1 != nil || err2 != nil {
-        fmt.Println("范围必须为整数")
-        return
-    }
-    
+	// 处理位置参数（非标志参数）
+	if len(flag.Args()) < 2 {
+		fmt.Println("缺少范围")
+		return
+	}
+
+	num1, err1 := strconv.Atoi(flag.Args()[0])
+	num2, err2 := strconv.Atoi(flag.Args()[1])
+	if err1 != nil || err2 != nil {
+		fmt.Println("范围必须为整数")
+		return
+	}
+
 	// 创建一个colly收集器
 	c := colly.NewCollector(
 		// 设置Colly的并发数
@@ -57,20 +57,20 @@ func main() {
 
 	// 错误处理
 	c.OnError(func(r *colly.Response, err error) {
-	    q := r.Request
-            retriesLeft := 5
-            if x, ok := q.Ctx.GetAny("retriesLeft").(int); ok {
-                retriesLeft = x
-            }
-            if retriesLeft > 0 {
-                q.Ctx.Put("retriesLeft", retriesLeft-1)
-                q.Retry()
-            } else{
-		    ur := q.URL.String()
-		    fmt.Println(err, "Error URL:", ur)
-		    // exec.Command("cmd", "/c", "start", ur).Start()
-		    // errn = errn + 1
-	    }
+		q := r.Request
+		retriesLeft := 5
+		if x, ok := q.Ctx.GetAny("retriesLeft").(int); ok {
+			retriesLeft = x
+		}
+		if retriesLeft > 0 {
+			q.Ctx.Put("retriesLeft", retriesLeft-1)
+			q.Retry()
+		} else {
+			ur := q.URL.String()
+			fmt.Println(err, "Error URL:", ur)
+			// exec.Command("cmd", "/c", "start", ur).Start()
+			// errn = errn + 1
+		}
 	})
 
 	// 遍历指定的id范围
