@@ -23,10 +23,11 @@ jobs:
         env:
           GOOS: android
           GOARCH: arm64
+          CGO_ENABLED: 1
           CC : "/opt/hostedtoolcache/ndk/r26d/x64/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang"
           CXX: "/opt/hostedtoolcache/ndk/r26d/x64/toolchains/llvm/prebuilt/linux-x86_64//bin/aarch64-linux-android28-clang++"
         run: |
-          go build -ldflags "-X main.Version=$version -s -w -linkmode=external -extldflags=-pie" -o "colly-for-netcloud-arm64"
+          go build -ldflags "-s -w -linkmode=external -extldflags=-pie" -o "colly-for-netcloud-arm64"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         if: ${{ !github.head_ref }}
