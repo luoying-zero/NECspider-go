@@ -18,7 +18,7 @@ jobs:
       - name: Setup Go environment
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21.6'
+          go-version: '1.24.1'
       - run: |
           go mod init github.com/luoyingying123/Colly-for-Netcloud
           go mod tidy
@@ -29,10 +29,10 @@ jobs:
         env:
           GOOS: android
           GOARCH: arm64
-          CC : "android-ndk-r26c/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang"
-          CXX: "android-ndk-r26c/toolchains/llvm/prebuilt/linux-x86_64//bin/aarch64-linux-android28-clang++"
+          CC : "$ndk-path/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang"
+          CXX: "$ndk-path/toolchains/llvm/prebuilt/linux-x86_64//bin/aarch64-linux-android28-clang++"
         run: |
-          echo 111
+          echo $ndk-path
           go build -o "colly-for-netcloud" -trimpath -ldflags "$LD_FLAGS" .
       - name: Upload artifact
         uses: actions/upload-artifact@v4
