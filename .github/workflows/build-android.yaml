@@ -3,12 +3,6 @@ name: build-android
 on: 
   workflow_dispatch:
 
-env:
-  BINARY_PREFIX: "colly-for-netcloud_"
-  BINARY_SUFFIX: ""
-  PR_PROMPT: "::warning:: Build artifact will not be uploaded due to the workflow is trigged by pull request."
-  LD_FLAGS: "-w -s"
-
 jobs:
   build:
     name: Build binary CI
@@ -32,10 +26,10 @@ jobs:
           CC : "/opt/hostedtoolcache/ndk/r26d/x64/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang"
           CXX: "/opt/hostedtoolcache/ndk/r26d/x64/toolchains/llvm/prebuilt/linux-x86_64//bin/aarch64-linux-android28-clang++"
         run: |
-          echo $NDK_HOME
-          go build -o "colly-for-netcloud" -trimpath -ldflags "$LD_FLAGS" .
+          go build -ldflags "-X main.Version=$version -s -w -linkmode=external -extldflags=-pie" -o "colly-for-netcloud-arm64"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         if: ${{ !github.head_ref }}
         with:
-          path: colly-for-netcloud
+          name: colly-for-netcloud
+          path: colly-for-netcloud-arm64
