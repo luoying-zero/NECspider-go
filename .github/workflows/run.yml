@@ -6,13 +6,13 @@ name: run
 on:
   workflow_dispatch:
     inputs:
-      p:
+      parallelism:
         required: true
         type: string
-      b:
+      begin_id:
         required: true
         type: string
-      e:
+      end_id:
         required: true
         type: string
 
@@ -30,4 +30,4 @@ jobs:
     - name: Go run
       run: |
         go mod tidy
-        go run main.go -p ${{inputs.p}} ${{inputs.b}} ${{inputs.e}}
+        go run main.go -p ${{inputs.parallelism}} ${{inputs.begin_id}} ${{inputs.end_id}}
