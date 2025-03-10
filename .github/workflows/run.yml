@@ -5,10 +5,19 @@ name: run
 
 on:
   workflow_dispatch:
+    inputs:
+      p:
+        required: true
+        type: string
+      b:
+        required: true
+        type: string
+      e:
+        required: true
+        type: string
 
 jobs:
-
-  build:
+  collying:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -21,4 +30,4 @@ jobs:
     - name: Go run
       run: |
         go mod tidy
-        go run main.go -p 200 1000000 1100000
+        go run main.go -p ${{inputs.p}} ${{inputs.b}} ${{inputs.e}}
