@@ -57,16 +57,16 @@ func main() {
 
 	// 错误处理
 	c.OnError(func(r *colly.Response, err error) {
-	    r = r.Request
+	    c = r.Request
             retriesLeft := 5
-            if x, ok := r.Ctx.GetAny("retriesLeft").(int); ok {
+            if x, ok := c.Ctx.GetAny("retriesLeft").(int); ok {
                 retriesLeft = x
             }
             if retriesLeft > 0 {
-                r.Ctx.Put("retriesLeft", retriesLeft-1)
-                r.Retry()
+                c.Ctx.Put("retriesLeft", retriesLeft-1)
+                c.Retry()
             } else{
-		    ur := r.URL.String()
+		    ur := c.URL.String()
 		    fmt.Println(err, "Error URL:", ur)
 		    // exec.Command("cmd", "/c", "start", ur).Start()
 		    // errn = errn + 1
