@@ -22,7 +22,7 @@ jobs:
       - run: |
           go mod init github.com/luoyingying123/Colly-for-Netcloud
           go mod tidy
-      - uses: nttld/setup-ndk@v1
+      - uses: HoshinoSuzumi/setup-ndk@v1.5.4
         with:
           ndk-version: r26d 
       - name: Build binary file
