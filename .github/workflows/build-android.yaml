@@ -32,6 +32,7 @@ jobs:
           CC : "android-ndk-r26c/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang"
           CXX: "android-ndk-r26c/toolchains/llvm/prebuilt/linux-x86_64//bin/aarch64-linux-android28-clang++"
         run: |
+          echo $NDKROOT
           go build -o "colly-for-netcloud" -trimpath -ldflags "$LD_FLAGS" .
       - name: Upload artifact
         uses: actions/upload-artifact@v4
