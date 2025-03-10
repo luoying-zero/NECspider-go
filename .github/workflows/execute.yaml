@@ -1,4 +1,4 @@
-name: run
+name: exe
 
 on: 
   workflow_dispatch:
