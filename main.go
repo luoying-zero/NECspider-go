@@ -6,6 +6,7 @@ import (
 	"strconv"
 	// "os/exec"
 	"github.com/gocolly/colly"
+	"github.com/gocolly/colly/queue"
 	"time"
 )
 
@@ -39,6 +40,10 @@ func main() {
 		colly.Async(true), // 启用异步请求
 	)
 
+	q, _ := queue.New(
+		pam * 2, // Number of consumer threads
+		&queue.InMemoryQueueStorage{MaxSize: 10000}, // Use default queue storage
+	)
 	// 设置并发量
 	c.Limit(&colly.LimitRule{
 		DomainGlob:  "*.com",
@@ -77,11 +82,8 @@ func main() {
 	for id := num1; id <= num2; id++ {
 		url := fmt.Sprintf("https://music.163.com/playlist?id=%d", id)
 		// 访问URL
-		err := c.Visit(url)
-		if err != nil {
-			fmt.Printf("Error visiting: %s - %v\n", url, err)
-		}
-	}
+		q.AddURL(url)
+	q.Run(c)
 	c.Wait()
 	fmt.Println(sli)
 	fmt.Printf("pam:%d time:%s", pam, time.Since(sti))
