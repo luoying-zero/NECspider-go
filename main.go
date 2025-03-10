@@ -87,5 +87,5 @@ func main() {
 	//q.Run(c)
 	c.Wait()
 	fmt.Println(sli)
-	fmt.Printf("pam:%d time:%s", pam, time.Since(sti))
+	fmt.Printf("pam:%d time:%s\n", pam, time.Since(sti))
 }
