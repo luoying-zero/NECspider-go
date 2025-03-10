@@ -52,7 +52,8 @@ func main() {
 
 	// 设置抓取内容时的处理函数
 	c.OnHTML("#content-operation > a.u-btni.u-btni-share", func(e *colly.HTMLElement) {
-		if e.DOM.Attr("data-res-author") == "PurionPurion" {
+		author, _ := e.DOM.Attr("data-res-author")
+		if author == "PurionPurion" {
 			sli = append(sli, e.Request.URL.String())
 		}
 		// 用Break从回调中返回，这将阻止进一步的元素匹配
