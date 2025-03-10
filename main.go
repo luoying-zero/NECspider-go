@@ -87,4 +87,5 @@ func main() {
 	c.Wait()
 	fmt.Println(sli)
 	fmt.Printf("pam:%d time:%s", pam, time.Since(sti))
+	}
 }
