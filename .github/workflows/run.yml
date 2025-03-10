@@ -21,4 +21,4 @@ jobs:
     - name: Go run
       run: |
         go mod tidy
-        go run main.go 100 200
+        go run main.go -p 1000 100000 200000
