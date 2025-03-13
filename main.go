@@ -16,7 +16,7 @@ func main() {
 	// errn := 0
 	var sli []string
 
-	flag.IntVar(&pam, "p", 50, "设置并发量")
+	flag.IntVar(&pam, "p", 100, "设置并发量")
 
 	// 解析标志参数
 	flag.Parse()
@@ -81,7 +81,7 @@ func main() {
 
 	// 遍历指定的id范围
 	for id := num1; id <= num2; id++ {
-		url := fmt.Sprintf("https://music.163.com/playlist?id=%d", id)
+		url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
 		// 访问URL
 		c.Visit(url)
 	}
