@@ -25,9 +25,9 @@ jobs:
           CXX: "/opt/hostedtoolcache/ndk/r26d/x64/toolchains/llvm/prebuilt/linux-x86_64//bin/aarch64-linux-android28-clang++"
         run: |
           go mod tidy
-          go build -ldflags "-s -w -linkmode=external -extldflags=-pie" -o "colly-for-netcloud_arm64"
+          go build -ldflags "-s -w -linkmode=external -extldflags=-pie" -o "NECspider-go_arm64"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: android_arm64
-          path: colly-for-netcloud_arm64
+          path: NECspider-go_arm64
