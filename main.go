@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	// "os/exec"
-	"github.com/gocolly/colly"
+	"github.com/gocolly/colly/v2"
 	//"github.com/gocolly/colly/queue"
 	"time"
 )
