@@ -19,7 +19,7 @@ jobs:
 
     - name: init mod
       run: |
-        go mod init luoying/Colly-for-NetCloud
+        # go mod init luoying/Colly-for-NetCloud
         go mod tidy
 
     - uses: actions/upload-artifact@v4
