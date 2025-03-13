@@ -1,4 +1,4 @@
-module luoying/Colly-for-NetCloud
+module luoying/NECspider-go
 
 go 1.20
 
