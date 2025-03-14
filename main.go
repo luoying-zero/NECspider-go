@@ -17,7 +17,7 @@ func main() {
 	sti := time.Now()
 	var pam int
 	// errn := 0
-	var sli []string
+	var sli []int
 	author := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a, 0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39}
 
 	flag.IntVar(&pam, "p", 100, "设置并发量")
@@ -56,7 +56,8 @@ func main() {
 
 	c.OnResponse(func(res *colly.Response) {
 		if bytes.Contains(res.Body, author) {
-			sli = append(sli, res.Request.URL.String())
+			plid , _ := res.Ctx.GetAny("plid").(int)
+			sli = append(sli, plid)
 		}
 		res.Request.Abort()
 	})
@@ -83,8 +84,8 @@ func main() {
 			q.Ctx.Put("retriesLeft", retriesLeft-1)
 			q.Retry()
 		} else {
-			ur := q.URL.String()
-			fmt.Println(err, "Error URL:", ur)
+			plid , _ := r.Ctx.GetAny("plid").(int)
+			fmt.Println(err, "Error plid:", plid)
 			// exec.Command("cmd", "/c", "start", ur).Start()
 			// errn = errn + 1
 		}
@@ -94,7 +95,9 @@ func main() {
 	for id := num1; id <= num2; id++ {
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
 		// 访问URL
-		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), nil, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
+		ctx := colly.NewContext()
+		ctx.put("plid", id)
+		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), ctx, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
 	}
 	//q.Run(c)
 	c.Wait()
