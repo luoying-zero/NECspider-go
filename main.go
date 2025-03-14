@@ -96,7 +96,7 @@ func main() {
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
 		// 访问URL
 		ctx := colly.NewContext()
-		ctx.put("plid", id)
+		ctx.Put("plid", id)
 		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), ctx, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
 	}
 	//q.Run(c)
