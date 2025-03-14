@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"strconv"
-  "strings"
-  "net/http"
+	"strings"
 	// "os/exec"
 	"github.com/gocolly/colly/v2"
 	//"github.com/gocolly/colly/queue"
@@ -17,7 +17,7 @@ func main() {
 	var pam int
 	// errn := 0
 	var sli []string
-  author := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a, 0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39}
+	author := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a, 0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39}
 
 	flag.IntVar(&pam, "p", 100, "设置并发量")
 
@@ -53,22 +53,22 @@ func main() {
 		Parallelism: pam, // 调整为需要的并发量
 	})
 
-   c.OnRequest(func(res *colly.Request){
-     if bytes.Contains(res.Body, author){
-       sli = append(sli, res.URL.String())
-     }
-     res.Request.Abort()
-   })
-  
+	c.OnRequest(func(res *colly.Request) {
+		if bytes.Contains(res.Body, author) {
+			sli = append(sli, res.URL.String())
+		}
+		res.Request.Abort()
+	})
+
 	// 设置抓取内容时的处理函数
 	//c.OnHTML("#content-operation > a.u-btni.u-btni-share", func(e *colly.HTMLElement) {
-		//author, _ := e.DOM.Attr("data-res-author")
-		//if author == "PurionPurion" {
-			//sli = append(sli, e.Request.URL.String())
-		//}
-		// 用Break从回调中返回，这将阻止进一步的元素匹配
-		// 因为colly并不原生支持选择第一个元素，所以一旦匹配到第一个元素，就通过Break中断处理
-		//e.Request.Abort()
+	//author, _ := e.DOM.Attr("data-res-author")
+	//if author == "PurionPurion" {
+	//sli = append(sli, e.Request.URL.String())
+	//}
+	// 用Break从回调中返回，这将阻止进一步的元素匹配
+	// 因为colly并不原生支持选择第一个元素，所以一旦匹配到第一个元素，就通过Break中断处理
+	//e.Request.Abort()
 	//})
 
 	// 错误处理
@@ -93,7 +93,7 @@ func main() {
 	for id := num1; id <= num2; id++ {
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
 		// 访问URL
-		c.Request("POST", "http://music.163.com/api/v6/playlist/detail",strings.NewReader("id="+strconv.Itoa(id)), nil, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
+		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id="+strconv.Itoa(id)), nil, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
 	}
 	//q.Run(c)
 	c.Wait()
