@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"bytes"
 	// "os/exec"
 	"github.com/gocolly/colly/v2"
 	//"github.com/gocolly/colly/queue"
