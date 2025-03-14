@@ -54,9 +54,9 @@ func main() {
 		Parallelism: pam, // 调整为需要的并发量
 	})
 
-	c.OnRequest(func(res *colly.Request) {
+	c.OnResponse(func(res *colly.Response) {
 		if bytes.Contains(res.Body, author) {
-			sli = append(sli, res.URL.String())
+			sli = append(sli, res.Request.URL.String())
 		}
 		res.Request.Abort()
 	})
@@ -94,7 +94,7 @@ func main() {
 	for id := num1; id <= num2; id++ {
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
 		// 访问URL
-		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id="+strconv.Itoa(id)), nil, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
+		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), nil, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
 	}
 	//q.Run(c)
 	c.Wait()
