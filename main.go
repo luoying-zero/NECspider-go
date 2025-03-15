@@ -41,7 +41,7 @@ func main() {
 
 	ctx := context.TODO()
 	maxWorkers := runtime.GOMAXPROCS(0)
-	sem := semaphore.NewWeighted(int64(pam)))
+	sem := semaphore.NewWeighted(int64(pam))
 	
 	// 创建一个colly收集器
 	c := colly.NewCollector(
