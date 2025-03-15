@@ -7,7 +7,9 @@ import (
 	"strconv"
 	"strings"
 	"bytes"
+	"context"
 	"time"
+	"runtime"
 	"github.com/gocolly/colly/v2"
 	"golang.org/x/sync/semaphore"
 )
@@ -18,6 +20,7 @@ func main() {
 	// errn := 0
 	var sli []int
 	author := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a, 0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
+	ctx := context.TODO()
 	maxWorkers := runtime.GOMAXPROCS(0)
 	sem := semaphore.NewWeighted(int64(maxWorkers))
 
@@ -92,7 +95,7 @@ func main() {
 	// 遍历指定的id范围
 	for id := num1; id <= num2; id++ {
 		if err := sem.Acquire(ctx, 1); err != nil {
-			log.Printf("Failed to acquire semaphore: %v", err)
+			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
 		}
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
