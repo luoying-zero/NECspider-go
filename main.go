@@ -7,10 +7,9 @@ import (
 	"strconv"
 	"strings"
 	"bytes"
-	// "os/exec"
-	"github.com/gocolly/colly/v2"
-	//"github.com/gocolly/colly/queue"
 	"time"
+	"github.com/gocolly/colly/v2"
+	"golang.org/x/sync/semaphore"
 )
 
 func main() {
@@ -19,6 +18,8 @@ func main() {
 	// errn := 0
 	var sli []int
 	author := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a, 0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
+	maxWorkers := runtime.GOMAXPROCS(0)
+	sem := semaphore.NewWeighted(int64(maxWorkers))
 
 	flag.IntVar(&pam, "p", 100, "设置并发量")
 
@@ -44,22 +45,18 @@ func main() {
 		colly.Async(true), // 启用异步请求
 	)
 
-	/* q, _ := queue.New(
-		pam * 2, // Number of consumer threads
-		&queue.InMemoryQueueStorage{MaxSize: 10000}, // Use default queue storage
-	) */
 	// 设置并发量
-	c.Limit(&colly.LimitRule{
-		DomainGlob:  "*.com",
-		Parallelism: pam, // 调整为需要的并发量
-	})
+	// c.Limit(&colly.LimitRule{
+		// DomainGlob:  "*.com",
+		// Parallelism: pam, // 调整为需要的并发量
+	// })
 
 	c.OnResponse(func(res *colly.Response) {
 		if bytes.Contains(res.Body, author) {
 			plid , _ := res.Ctx.GetAny("plid").(int)
 			sli = append(sli, plid)
 		}
-		res.Request.Abort()
+		sem.Release(1)
 	})
 
 	// 设置抓取内容时的处理函数
@@ -86,6 +83,7 @@ func main() {
 		} else {
 			plid , _ := r.Ctx.GetAny("plid").(int)
 			fmt.Println(err, "Error plid:", plid)
+			sem.Release(1)
 			// exec.Command("cmd", "/c", "start", ur).Start()
 			// errn = errn + 1
 		}
@@ -93,13 +91,16 @@ func main() {
 
 	// 遍历指定的id范围
 	for id := num1; id <= num2; id++ {
+		if err := sem.Acquire(ctx, 1); err != nil {
+			log.Printf("Failed to acquire semaphore: %v", err)
+			break
+		}
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
 		// 访问URL
 		ctx := colly.NewContext()
 		ctx.Put("plid", id)
 		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), ctx, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
 	}
-	//q.Run(c)
 	c.Wait()
 	fmt.Println(sli)
 	fmt.Printf("pam:%d time:%s\n", pam, time.Since(sti))
