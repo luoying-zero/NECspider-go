@@ -9,7 +9,6 @@ import (
 	"bytes"
 	"context"
 	"time"
-	"runtime"
 	"github.com/gocolly/colly/v2"
 	"golang.org/x/sync/semaphore"
 )
