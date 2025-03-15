@@ -2,7 +2,10 @@ module luoying/NECspider-go
 
 go 1.20
 
-require github.com/gocolly/colly/v2 v2.1.0
+require (
+	github.com/gocolly/colly/v2 v2.1.0
+	golang.org/x/sync v0.12.0
+)
 
 require (
 	github.com/PuerkitoBio/goquery v1.10.2 // indirect
