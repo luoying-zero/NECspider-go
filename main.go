@@ -20,12 +20,8 @@ func main() {
 	// errn := 0
 	var sli []int
 	author := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a, 0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
-	ctx := context.TODO()
-	maxWorkers := runtime.GOMAXPROCS(0)
-	fmt.Println(maxWorkers)
-	sem := semaphore.NewWeighted(int64(maxWorkers))
 
-	flag.IntVar(&pam, "p", 100, "设置并发量")
+	flag.IntVar(&pam, "p", 200, "设置并发量")
 
 	// 解析标志参数
 	flag.Parse()
@@ -43,6 +39,10 @@ func main() {
 		return
 	}
 
+	ctx := context.TODO()
+	maxWorkers := runtime.GOMAXPROCS(0)
+	sem := semaphore.NewWeighted(int64(pam)))
+	
 	// 创建一个colly收集器
 	c := colly.NewCollector(
 		// 设置Colly的并发数
