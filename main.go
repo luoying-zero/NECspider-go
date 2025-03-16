@@ -8,13 +8,12 @@ import (
 	"strings"
 	"bytes"
 	"context"
-	"time"
 	"github.com/gocolly/colly/v2"
 	"golang.org/x/sync/semaphore"
+	"github.com/schollz/progressbar/v3"
 )
 
 func main() {
-	sti := time.Now()
 	var pam int
 	// errn := 0
 	var sli []int
@@ -41,6 +40,8 @@ func main() {
 	ctx := context.TODO()
 	sem := semaphore.NewWeighted(int64(pam))
 	
+	bar := progressbar.Default(num2 - num1 + 1)
+	
 	// 创建一个colly收集器
 	c := colly.NewCollector(
 		// 设置Colly的并发数
@@ -59,6 +60,7 @@ func main() {
 			sli = append(sli, plid)
 		}
 		sem.Release(1)
+		bar.Add(1)
 	})
 
 	// 设置抓取内容时的处理函数
@@ -86,6 +88,7 @@ func main() {
 			plid , _ := r.Ctx.GetAny("plid").(int)
 			fmt.Println(err, "Error plid:", plid)
 			sem.Release(1)
+			bar.Add(1)
 			// exec.Command("cmd", "/c", "start", ur).Start()
 			// errn = errn + 1
 		}
@@ -105,5 +108,4 @@ func main() {
 	}
 	c.Wait()
 	fmt.Println(sli)
-	fmt.Printf("pam:%d time:%s\n", pam, time.Since(sti))
 }
