@@ -8,7 +8,6 @@ import (
 	"strings"
 	"bytes"
 	"context"
-	//"time"
 	"github.com/gocolly/colly/v2"
 	"golang.org/x/sync/semaphore"
 	"github.com/schollz/progressbar/v3"
@@ -83,7 +82,6 @@ func main() {
 		}
 		if retriesLeft > 0 {
 			q.Ctx.Put("retriesLeft", retriesLeft-1)
-			//time.Sleep(5 * time.Second)
 			q.Retry()
 		} else {
 			plid , _ := r.Ctx.GetAny("plid").(int)
@@ -100,8 +98,8 @@ func main() {
 			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
 		}
-		if id % 100000 =0 {
-		    bar.Add(100000)
+		if (id - num1) % 5000 =0 {
+		    bar.Add(5000)
 		}
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
 		// 访问URL
