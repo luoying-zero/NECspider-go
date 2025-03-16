@@ -40,7 +40,7 @@ func main() {
 	ctx := context.TODO()
 	sem := semaphore.NewWeighted(int64(pam))
 	
-	bar := progressbar.Default(num2 - num1 + 1)
+	bar := progressbar.Default(int64(num2 - num1 + 1))
 	
 	// 创建一个colly收集器
 	c := colly.NewCollector(
