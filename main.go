@@ -61,7 +61,6 @@ func main() {
 			sli = append(sli, plid)
 		}
 		sem.Release(1)
-		bar.Add(1)
 	})
 
 	// 设置抓取内容时的处理函数
@@ -90,7 +89,6 @@ func main() {
 			plid , _ := r.Ctx.GetAny("plid").(int)
 			fmt.Println(err, "Error plid:", plid)
 			sem.Release(1)
-			bar.Add(1)
 			// exec.Command("cmd", "/c", "start", ur).Start()
 			// errn = errn + 1
 		}
@@ -101,6 +99,9 @@ func main() {
 		if err := sem.Acquire(ctx, 1); err != nil {
 			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
+		}
+		if id % 100000 =0 {
+		    bar.Add(100000)
 		}
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
 		// 访问URL
