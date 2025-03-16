@@ -9,7 +9,7 @@ on:
       parallelism:
         required: false
         type: string
-        default: "200"
+        default: "5000"
       begin_id:
         required: true
         type: string
