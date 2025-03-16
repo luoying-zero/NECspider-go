@@ -98,7 +98,7 @@ func main() {
 			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
 		}
-		if (id - num1) % 5000 =0 {
+		if (id - num1) % 5000 == 0 {
 		    bar.Add(5000)
 		}
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
