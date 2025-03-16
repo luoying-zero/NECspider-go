@@ -8,7 +8,7 @@ import (
 	"strings"
 	"bytes"
 	"context"
-	"time"
+	//"time"
 	"github.com/gocolly/colly/v2"
 	"golang.org/x/sync/semaphore"
 	"github.com/schollz/progressbar/v3"
@@ -84,7 +84,7 @@ func main() {
 		}
 		if retriesLeft > 0 {
 			q.Ctx.Put("retriesLeft", retriesLeft-1)
-			time.Sleep(5 * time.Second)
+			//time.Sleep(5 * time.Second)
 			q.Retry()
 		} else {
 			plid , _ := r.Ctx.GetAny("plid").(int)
