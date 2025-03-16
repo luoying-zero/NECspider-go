@@ -99,7 +99,7 @@ func main() {
 			break
 		}
 		if (id - num1) % 5000 == 0 {
-		    bar.Set((id -num1) / 5000 - 1)
+		    bar.Set(id - num1 - 5000)
 		}
 		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
 		// 访问URL
