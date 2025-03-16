@@ -8,6 +8,7 @@ import (
 	"strings"
 	"bytes"
 	"context"
+	"time"
 	"github.com/gocolly/colly/v2"
 	"golang.org/x/sync/semaphore"
 	"github.com/schollz/progressbar/v3"
@@ -77,12 +78,13 @@ func main() {
 	// 错误处理
 	c.OnError(func(r *colly.Response, err error) {
 		q := r.Request
-		retriesLeft := 5
+		retriesLeft := 10
 		if x, ok := q.Ctx.GetAny("retriesLeft").(int); ok {
 			retriesLeft = x
 		}
 		if retriesLeft > 0 {
 			q.Ctx.Put("retriesLeft", retriesLeft-1)
+			time.Sleep(5 * time.Second)
 			q.Retry()
 		} else {
 			plid , _ := r.Ctx.GetAny("plid").(int)
