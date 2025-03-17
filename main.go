@@ -119,6 +119,7 @@ func main() {
 	close(printChan)
 	for _, id := range sli {
 		fmt.Printf("\"https://music.163.com/playlist?id=%d\",\n", id)
+	}
 }
 
 func checkSequence(s, sub1, sub2 []byte) bool {
