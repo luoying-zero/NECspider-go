@@ -29,5 +29,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: android_amd64
+          name: windows_amd64
           path: NECspider-go_amd64.exe
