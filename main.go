@@ -63,7 +63,6 @@ func main() {
 
 	c.OnResponse(func(res *colly.Response) {
 		if checkSequence(res.Body, field, author) {
-			fmt.Println(2)
 			plid , _ := res.Ctx.GetAny("plid").(int)
 			dataChan <- plid
 		}
@@ -121,16 +120,14 @@ func main() {
 
 func checkSequence(s, sub1, sub2 []byte) bool {
     // 查找第一个子字节串的位置
-    fmt.Printf("%X\n", s[0:8])
     idx := bytes.Index(s, sub1)
     if idx == -1 {
         return false
     }
-    fmt.Println(idx)
-    fmt.Printf("%X\n", s[:idx+len(sub1)])
+    
     // 截取第一个子字节串之后的部分
     remaining := s[idx+len(sub1):]
-    fmt.Printf("%X\n", remaining[0:16])
+    
     // 判断剩余部分是否以第二个子字节串开头
     return bytes.HasPrefix(remaining, sub2)
 }
