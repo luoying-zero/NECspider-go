@@ -129,7 +129,7 @@ func checkSequence(s, sub1, sub2 []byte) bool {
     fmt.Printf("%X\n", s[:idx+len(sub1)])
     // 截取第一个子字节串之后的部分
     remaining := s[idx+len(sub1):]
-    fmt.Printf("%X\n", remaining[0:8])
+    fmt.Printf("%X\n", remaining[0:16])
     // 判断剩余部分是否以第二个子字节串开头
     return bytes.HasPrefix(remaining, sub2)
 }
