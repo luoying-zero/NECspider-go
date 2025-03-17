@@ -120,6 +120,7 @@ func main() {
 
 func checkSequence(s, sub1, sub2 []byte) bool {
     // 查找第一个子字节串的位置
+    fmt.Printf("%X\n", s[0:8]
     idx := bytes.Index(s, sub1)
     if idx == -1 {
         return false
