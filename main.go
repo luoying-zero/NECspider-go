@@ -106,8 +106,6 @@ func main() {
 		if (id - num1) % 5000 == 0 {
 		    bar.Set(id - num1 - 5000)
 		}
-		//url := fmt.Sprintf("http://music.163.com/playlist?id=%d", id)
-		// 访问URL
 		ctx := colly.NewContext()
 		ctx.Put("plid", id)
 		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), ctx, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
@@ -117,8 +115,13 @@ func main() {
 	time.Sleep(1 * time.Second)
 	close(dataChan)
 	close(printChan)
+	
 	for _, id := range sli {
-		fmt.Printf("\"https://music.163.com/playlist?id=%d\",\n", id)
+		fmt.Printf("\"https://music.163.com/playlist?id=%d\",", id)
+	}
+	fmt.Printf("\n")
+	for _, id := range sli {
+		fmt.Printf("\"https://music.lliiiill.com/playlist/%d\",", id)
 	}
 }
 
