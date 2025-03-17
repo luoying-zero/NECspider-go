@@ -42,6 +42,12 @@ func main() {
 			sli = append(sli, num)
 		}
 	}()
+	printChan := make(chan string, 10)
+    go func() {
+        for msg := range printChan {
+            fmt.Println(msg)
+        }
+    }()
 	
 	ctx := context.TODO()
 	sem := semaphore.NewWeighted(int64(pam))
@@ -85,7 +91,7 @@ func main() {
 			q.Retry()
 		} else {
 			plid , _ := r.Ctx.GetAny("plid").(int)
-			fmt.Println(err, "Error plid:", plid)
+			printChan <- fmt.Sprintf("Error plid: %v %v", plid, err)
 			sem.Release(1)
 		}
 	})
@@ -107,5 +113,6 @@ func main() {
 	}
 	c.Wait()
 	close(dataChan)
+	close(printChan)
 	fmt.Println(sli)
 }
