@@ -8,6 +8,7 @@ import (
 	"strings"
 	"bytes"
 	"context"
+	"time"
 	"github.com/gocolly/colly/v2"
 	"golang.org/x/sync/semaphore"
 	"github.com/schollz/progressbar/v3"
@@ -112,6 +113,7 @@ func main() {
 		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), ctx, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
 	}
 	c.Wait()
+	time.Sleep(1 * time.Second)
 	close(dataChan)
 	close(printChan)
 	fmt.Println(sli)
