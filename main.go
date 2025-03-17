@@ -15,8 +15,6 @@ import (
 
 func main() {
 	var pam int
-	// errn := 0
-	var sli []int
 	author := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a, 0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
 
 	flag.IntVar(&pam, "p", 500, "设置并发量")
@@ -37,6 +35,14 @@ func main() {
 		return
 	}
 
+	dataChan := make(chan int, 10)
+	var sli []int
+	go func() {
+		for num := range dataChan {
+			sli = append(sli, num)
+		}
+	}()
+	
 	ctx := context.TODO()
 	sem := semaphore.NewWeighted(int64(pam))
 	
@@ -48,16 +54,10 @@ func main() {
 		colly.Async(true), // 启用异步请求
 	)
 
-	// 设置并发量
-	// c.Limit(&colly.LimitRule{
-		// DomainGlob:  "*.com",
-		// Parallelism: pam, // 调整为需要的并发量
-	// })
-
 	c.OnResponse(func(res *colly.Response) {
 		if bytes.Contains(res.Body, author) {
 			plid , _ := res.Ctx.GetAny("plid").(int)
-			sli = append(sli, plid)
+			dataChan <- plid
 		}
 		sem.Release(1)
 	})
@@ -87,8 +87,6 @@ func main() {
 			plid , _ := r.Ctx.GetAny("plid").(int)
 			fmt.Println(err, "Error plid:", plid)
 			sem.Release(1)
-			// exec.Command("cmd", "/c", "start", ur).Start()
-			// errn = errn + 1
 		}
 	})
 
@@ -108,5 +106,6 @@ func main() {
 		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), ctx, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
 	}
 	c.Wait()
+	close(dataChan)
 	fmt.Println(sli)
 }
