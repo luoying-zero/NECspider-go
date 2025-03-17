@@ -62,7 +62,7 @@ func main() {
 	)
 
 	c.OnResponse(func(res *colly.Response) {
-		if checkSequence(res.Body, field, author) {
+		if bytes.Contains(res.Body, field + author) {
 			plid , _ := res.Ctx.GetAny("plid").(int)
 			dataChan <- plid
 		}
