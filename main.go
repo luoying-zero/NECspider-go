@@ -15,7 +15,8 @@ import (
 
 func main() {
 	var pam int
-	author := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a, 0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
+	field := []byte("\"userId\": ")
+	author := []byte("62696289,")
 
 	flag.IntVar(&pam, "p", 500, "设置并发量")
 
@@ -61,7 +62,7 @@ func main() {
 	)
 
 	c.OnResponse(func(res *colly.Response) {
-		if bytes.Contains(res.Body, author) {
+		if checkSequence(res.Body, field, author) {
 			plid , _ := res.Ctx.GetAny("plid").(int)
 			dataChan <- plid
 		}
@@ -115,4 +116,18 @@ func main() {
 	close(dataChan)
 	close(printChan)
 	fmt.Println(sli)
+}
+
+func checkSequence(s, sub1, sub2 []byte) bool {
+    // 查找第一个子字节串的位置
+    idx := bytes.Index(s, sub1)
+    if idx == -1 {
+        return false
+    }
+    
+    // 截取第一个子字节串之后的部分
+    remaining := s[idx+len(sub1):]
+    
+    // 判断剩余部分是否以第二个子字节串开头
+    return bytes.HasPrefix(remaining, sub2)
 }
