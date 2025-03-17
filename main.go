@@ -124,7 +124,8 @@ func checkSequence(s, sub1, sub2 []byte) bool {
     if idx == -1 {
         return false
     }
-    
+    fmt.Println(idx)
+    fmt.Println(s[:idx+len(sub1)])
     // 截取第一个子字节串之后的部分
     remaining := s[idx+len(sub1):]
     
