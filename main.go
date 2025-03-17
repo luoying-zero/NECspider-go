@@ -17,7 +17,7 @@ func main() {
 	var pam int
 	field := []byte("\"userId\": ")
 	author := []byte("62696289,")
-
+	fmt.Println(field, author)
 	flag.IntVar(&pam, "p", 500, "设置并发量")
 
 	// 解析标志参数
