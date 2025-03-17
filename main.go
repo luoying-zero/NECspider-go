@@ -63,6 +63,7 @@ func main() {
 
 	c.OnResponse(func(res *colly.Response) {
 		if checkSequence(res.Body, field, author) {
+			fmt.Println(2)
 			plid , _ := res.Ctx.GetAny("plid").(int)
 			dataChan <- plid
 		}
