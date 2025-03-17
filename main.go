@@ -112,11 +112,14 @@ func main() {
 		ctx.Put("plid", id)
 		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), ctx, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
 	}
+
 	c.Wait()
 	time.Sleep(1 * time.Second)
 	close(dataChan)
 	close(printChan)
-	fmt.Println(sli)
+	for _, id := range sli {
+		fmt.Printf("\"https://music.163.com/playlist?id=%d\",\n", id)
+	}
 }
 
 func checkSequence(s, sub1, sub2 []byte) bool {
