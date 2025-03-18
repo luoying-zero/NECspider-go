@@ -103,7 +103,7 @@ func main() {
 			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
 		}
-		if (id-num1)%(pam/100) == 0 {
+		if (id-num1)%((num2-num1)/100) == 0 {
 			bar.Set(id - num1 - pam/100)
 		}
 		ctx := colly.NewContext()
@@ -114,8 +114,8 @@ func main() {
 			strings.NewReader("id="+strconv.Itoa(id)), 
 			ctx, 
 			http.Header{
-				"Content-Type": []string{"application/x-www-form-urlencoded"}
-			}
+				"Content-Type": []string{"application/x-www-form-urlencoded"},
+			},
 		)
 	}
 
