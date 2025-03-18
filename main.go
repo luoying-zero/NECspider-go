@@ -114,8 +114,8 @@ func main() {
 			strings.NewReader("id="+strconv.Itoa(id)), 
 			ctx, 
 			http.Header{
-				"Content-Type": []string{"application/x-www-form-urlencoded"}
-			}
+				"Content-Type": []string{"application/x-www-form-urlencoded"},
+			},
 		)
 	}
 
