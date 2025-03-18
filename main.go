@@ -15,12 +15,12 @@ import (
 )
 
 import _ "net/http/pprof"
-// 启动HTTP服务以获取profile
-go func() {
-    http.ListenAndServe(":6060", nil)
-}()
 
 func main() {
+// 启动HTTP服务以获取profile
+	go func() {
+		http.ListenAndServe(":6060", nil)
+	}()
 	var pam int
 	field := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a}
 	author := []byte{0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
