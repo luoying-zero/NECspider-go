@@ -14,7 +14,16 @@ import (
 	"time"
 )
 
+import _ "net/http/pprof"
+
 func main() {
+    go func() {
+        // pprof 服务器，将暴露在 6060 端口
+        if err := http.ListenAndServe(":6060", nil); err != nil {
+            panic(err)
+        }
+    }()
+    
 	var pam int
 	field := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a}
 	author := []byte{0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
