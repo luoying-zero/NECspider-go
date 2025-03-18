@@ -25,4 +25,4 @@ jobs:
 
     - name: Go run
       run: |
-        ./NECspider-go_amd64.exe ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}}
+        ./NECspider-go_amd64.exe -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}}
