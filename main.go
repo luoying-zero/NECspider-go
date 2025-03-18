@@ -14,13 +14,7 @@ import (
 	"time"
 )
 
-import _ "net/http/pprof"
-
 func main() {
-// 启动HTTP服务以获取profile
-	go func() {
-		http.ListenAndServe(":6060", nil)
-	}()
 	var pam int
 	field := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a}
 	author := []byte{0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
@@ -109,8 +103,8 @@ func main() {
 			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
 		}
-		if (id-num1)%5000 == 0 {
-			bar.Set(id - num1 - 5000)
+		if (id-num1)%((num2-num1)/100) == 0 {
+			bar.Set(id - num1 - pam/100)
 		}
 		ctx := colly.NewContext()
 		ctx.Put("plid", id)
