@@ -109,8 +109,8 @@ func main() {
 			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
 		}
-		if (id-num1)%((num2-num1)/100) == 0 {
-			bar.Set(id - num1 - (num2-num1)/100)
+		if (id-num1)%50 == 0 {
+			bar.Set(id - num1 - 50)
 		}
 		ctx := colly.NewContext()
 		ctx.Put("plid", id)
