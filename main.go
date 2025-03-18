@@ -104,7 +104,7 @@ func main() {
 			break
 		}
 		if (id-num1)%((num2-num1)/100) == 0 {
-			bar.Set(id - num1 - pam/100)
+			bar.Set(id - num1 - (num2-num1/100))
 		}
 		ctx := colly.NewContext()
 		ctx.Put("plid", id)
