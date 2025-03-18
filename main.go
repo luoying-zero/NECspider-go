@@ -103,8 +103,8 @@ func main() {
 			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
 		}
-		if (id - num1) % 5000 == 0 {
-		    bar.Set(id - num1 - 5000)
+		if (id - num1) % (pam / 100) == 0 {
+		    bar.Set(id - num1 - pam / 100)
 		}
 		ctx := colly.NewContext()
 		ctx.Put("plid", id)
@@ -131,10 +131,8 @@ func checkSequence(s, sub1, sub2 []byte) bool {
     if idx == -1 {
         return false
     }
-    
-    // 截取第一个子字节串之后的部分
+	// 截取第一个子字节串之后的部分
     remaining := s[idx+len(sub1):]
-    
     // 判断剩余部分是否以第二个子字节串开头
     return bytes.HasPrefix(remaining, sub2)
 }
