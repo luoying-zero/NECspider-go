@@ -1,0 +1,28 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: run
+
+on:
+  workflow_dispatch:
+    inputs:
+      parallelism:
+        required: false
+        type: string
+        default: "500"
+      begin_id:
+        required: true
+        type: string
+      end_id:
+        required: true
+        type: string
+
+jobs:
+  collying:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Go run
+      run: |
+        ./NECspider-go_amd64.exe ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}}
