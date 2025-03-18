@@ -1,23 +1,23 @@
 package main
 
 import (
+	"bytes"
+	"context"
 	"flag"
 	"fmt"
+	"github.com/gocolly/colly/v2"
+	"github.com/schollz/progressbar/v3"
+	"golang.org/x/sync/semaphore"
 	"net/http"
 	"strconv"
 	"strings"
-	"bytes"
-	"context"
 	"time"
-	"github.com/gocolly/colly/v2"
-	"golang.org/x/sync/semaphore"
-	"github.com/schollz/progressbar/v3"
 )
 
 func main() {
 	var pam int
-	field := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a,}
-	author := []byte{0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c,}
+	field := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a}
+	author := []byte{0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
 	flag.IntVar(&pam, "p", 500, "设置并发量")
 
 	// 解析标志参数
@@ -44,17 +44,17 @@ func main() {
 		}
 	}()
 	printChan := make(chan string, 10)
-    go func() {
-        for msg := range printChan {
-            fmt.Println(msg)
-        }
-    }()
-	
+	go func() {
+		for msg := range printChan {
+			fmt.Println(msg)
+		}
+	}()
+
 	ctx := context.TODO()
 	sem := semaphore.NewWeighted(int64(pam))
-	
+
 	bar := progressbar.Default(int64(num2 - num1 + 1))
-	
+
 	// 创建一个colly收集器
 	c := colly.NewCollector(
 		// 设置Colly的并发数
@@ -63,7 +63,7 @@ func main() {
 
 	c.OnResponse(func(res *colly.Response) {
 		if checkSequence(res.Body, field, author) {
-			plid , _ := res.Ctx.GetAny("plid").(int)
+			plid, _ := res.Ctx.GetAny("plid").(int)
 			dataChan <- plid
 		}
 		sem.Release(1)
@@ -91,7 +91,7 @@ func main() {
 			q.Ctx.Put("retriesLeft", retriesLeft-1)
 			q.Retry()
 		} else {
-			plid , _ := r.Ctx.GetAny("plid").(int)
+			plid, _ := r.Ctx.GetAny("plid").(int)
 			printChan <- fmt.Sprintf("Error plid: %v %v", plid, err)
 			sem.Release(1)
 		}
@@ -103,19 +103,27 @@ func main() {
 			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
 		}
-		if (id - num1) % 5000 == 0 {
-		    bar.Set(id - num1 - 5000)
+		if (id-num1)%(pam/100) == 0 {
+			bar.Set(id - num1 - pam/100)
 		}
 		ctx := colly.NewContext()
 		ctx.Put("plid", id)
-		c.Request("POST", "http://music.163.com/api/v6/playlist/detail", strings.NewReader("id=" + strconv.Itoa(id)), ctx, http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}})
+		c.Request(
+			"POST", 
+			"http://music.163.com/api/v6/playlist/detail", 
+			strings.NewReader("id="+strconv.Itoa(id)), 
+			ctx, 
+			http.Header{
+				"Content-Type": []string{"application/x-www-form-urlencoded"}
+			}
+		)
 	}
 
 	c.Wait()
 	time.Sleep(1 * time.Second)
 	close(dataChan)
 	close(printChan)
-	
+
 	for _, id := range sli {
 		fmt.Printf("\"https://music.163.com/playlist?id=%d\",", id)
 	}
@@ -126,15 +134,13 @@ func main() {
 }
 
 func checkSequence(s, sub1, sub2 []byte) bool {
-    // 查找第一个子字节串的位置
-    idx := bytes.Index(s, sub1)
-    if idx == -1 {
-        return false
-    }
-    
-    // 截取第一个子字节串之后的部分
-    remaining := s[idx+len(sub1):]
-    
-    // 判断剩余部分是否以第二个子字节串开头
-    return bytes.HasPrefix(remaining, sub2)
+	// 查找第一个子字节串的位置
+	idx := bytes.Index(s, sub1)
+	if idx == -1 {
+		return false
+	}
+	// 截取第一个子字节串之后的部分
+	remaining := s[idx+len(sub1):]
+	// 判断剩余部分是否以第二个子字节串开头
+	return bytes.HasPrefix(remaining, sub2)
 }
