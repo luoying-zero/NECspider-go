@@ -32,7 +32,7 @@ jobs:
       run: |
         go mod tidy
         go install github.com/google/pprof@latest
-        pprof --text pprof.pb.gz > pprof.txt
+        pprof --tree pprof.pb.gz > pprof.txt
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
