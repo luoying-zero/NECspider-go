@@ -32,9 +32,9 @@ jobs:
       run: |
         go mod tidy
         go install github.com/google/pprof@latest
-        pprof --tree pprof.pb.gz > pprof.txt
+        pprof --tree goroutine-delta > goroutine.txt
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: pprof
-        path: pprof.txt
+        name: goroutine
+        path: goroutinetxt
