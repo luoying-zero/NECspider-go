@@ -31,11 +31,10 @@ jobs:
     - name: Go run
       run: |
         go mod tidy
-        go run main.go -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}} & 
-        sleep 40s  # 确保服务启动
-        curl -o pprof.profile http://localhost:6060/debug/pprof/goroutine?seconds=30
+        go install github.com/google/pprof@latest
+        pprof --text pprof.pb.gz > pprof.txt
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: pprof
-        path: pprof.profile
+        path: pprof.txt
