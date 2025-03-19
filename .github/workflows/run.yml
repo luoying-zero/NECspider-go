@@ -34,8 +34,8 @@ jobs:
         go run main.go -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}} & 
         sleep 40s  # 确保服务启动
         curl -o pprof.profile http://localhost:6060/debug/pprof/goroutine?seconds=30
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: pprof
-          path: pprof.profile
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: pprof
+        path: pprof.profile
