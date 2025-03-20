@@ -55,12 +55,18 @@ func main() {
 
 	bar := progressbar.Default(int64(num2 - num1 + 1))
 
+	transport := &http.Transport{
+        MaxIdleConns:        0,          // 全局最大空闲连接数
+        MaxIdleConnsPerHost: 0,           // 每个主机的最大空闲连接数
+    }
+    
 	// 创建一个colly收集器
 	c := colly.NewCollector(
 		// 设置Colly的并发数
 		colly.Async(true), // 启用异步请求
 	)
-
+	c.WithTransport(transport)
+	
 	c.OnResponse(func(res *colly.Response) {
 		if checkSequence(res.Body, field, author) {
 			plid, _ := res.Ctx.GetAny("plid").(int)
