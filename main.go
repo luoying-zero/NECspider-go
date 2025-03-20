@@ -9,6 +9,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 	"golang.org/x/sync/semaphore"
 	"net/http"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -17,6 +18,7 @@ import (
 import _ "net/http/pprof"
 
 func main() {
+	runtime.SetBlockProfileRate(1000)
     go func() {
         // pprof 服务器，将暴露在 6060 端口
         if err := http.ListenAndServe(":6060", nil); err != nil {
