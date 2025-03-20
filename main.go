@@ -59,7 +59,7 @@ func main() {
         MaxIdleConns:        0,          // 全局最大空闲连接数
         MaxIdleConnsPerHost: 2^63-1,           // 每个主机的最大空闲连接数
         MaxConnsPerHost:    0,
-        TLSHandShakeTimeout:     20,
+        TLSHandshakeTimeout:     20,
         ForceAttemptHTTP2:  true,
     }
     
