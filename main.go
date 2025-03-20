@@ -78,10 +78,11 @@ func main() {
 		sem.Release(1)
 	})
 
-	c.Limit(&colly.LimitRule{
-		DomainRegexp: "*",
-		Parallelism: pam * 5
-	})
+	// c.Limit(&colly.LimitRule{
+		// DomainRegexp: "*",
+		// Parallelism: pam * 5
+	// })
+	
 	// 设置抓取内容时的处理函数
 	//c.OnHTML("#content-operation > a.u-btni.u-btni-share", func(e *colly.HTMLElement) {
 	//author, _ := e.DOM.Attr("data-res-author")
