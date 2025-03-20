@@ -57,7 +57,7 @@ func main() {
 
 	transport := &http.Transport{
         MaxIdleConns:        0,          // 全局最大空闲连接数
-        MaxIdleConnsPerHost: 10000000,           // 每个主机的最大空闲连接数
+        MaxIdleConnsPerHost: 2^63-1,           // 每个主机的最大空闲连接数
         MaxConnsPerHost:    0,
     }
     
