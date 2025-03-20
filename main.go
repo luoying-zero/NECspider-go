@@ -60,7 +60,7 @@ func main() {
         MaxIdleConnsPerHost: 2^63-1,           // 每个主机的最大空闲连接数
         MaxConnsPerHost:    0,
         TLSHandShakeTimeout:     20,
-        ForceAttemptHTTP2:  true
+        ForceAttemptHTTP2:  true,
     }
     
 	// 创建一个colly收集器
