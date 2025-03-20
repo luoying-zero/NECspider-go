@@ -57,7 +57,8 @@ func main() {
 
 	transport := &http.Transport{
         MaxIdleConns:        0,          // 全局最大空闲连接数
-        MaxIdleConnsPerHost: 0,           // 每个主机的最大空闲连接数
+        MaxIdleConnsPerHost: 10000000,           // 每个主机的最大空闲连接数
+        MaxConnsPerHost:    0,
     }
     
 	// 创建一个colly收集器
