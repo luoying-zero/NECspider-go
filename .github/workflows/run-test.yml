@@ -31,10 +31,17 @@ jobs:
     - name: Go run
       run: |
         go mod tidy
+        go run main.go -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}} &
+        sleep 30s
+        curl -o goroutine-dalta http://localhost:6060/debug/pprof/goroutine?seconds=30
+        curl -o block-dalta http://localhost:6060/debug/pprof/block?seconds=30
         go install github.com/google/pprof@latest
-        pprof --tree goroutine-delta > goroutine.txt
+        pprof -traces block-dalta > block.txt
+        pprof -traces goroutine-dalta > goroutine.txt
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: goroutine
-        path: goroutine.txt
+        name: test
+        path: |
+          block.txt
+          goroutine.txt
