@@ -32,7 +32,7 @@ jobs:
       run: |
         go mod tidy
         go run main.go -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}} &
-        sleep 5m
+        sleep 30s
         curl -o goroutine-dalta http://localhost:6060/debug/pprof/goroutine?seconds=30
         curl -o block-dalta http://localhost:6060/debug/pprof/block?seconds=30
         go install github.com/google/pprof@latest
