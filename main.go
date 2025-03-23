@@ -60,7 +60,6 @@ func main() {
 		MaxIdleConnsPerHost: 2^63-1,           // 每个主机的最大空闲连接数
 		MaxConnsPerHost:    0,
 		TLSHandshakeTimeout:     20,
-		ForceAttemptHTTP2:  true,
 	}
 
 	// 创建一个colly收集器
@@ -71,11 +70,11 @@ func main() {
 	c.WithTransport(transport)
 
 	c.OnResponse(func(res *colly.Response) {
+	    sem.Release(1)
 		if checkSequence(res.Body, field, author) {
 			plid, _ := res.Ctx.GetAny("plid").(int)
 			dataChan <- plid
 		}
-		sem.Release(1)
 	})
 
 	// 设置抓取内容时的处理函数
