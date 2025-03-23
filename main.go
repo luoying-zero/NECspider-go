@@ -53,23 +53,23 @@ func main() {
 	ctx := context.TODO()
 	sem := semaphore.NewWeighted(int64(pam))
 
-	bar := progressbar.Default(int64(num2 - num1 + 1))
+	bar := progressbar.DefaultSilent(int64(num2 - num1 + 1))
 
 	transport := &http.Transport{
-        MaxIdleConns:        0,          // 全局最大空闲连接数
-        MaxIdleConnsPerHost: 2^63-1,           // 每个主机的最大空闲连接数
-        MaxConnsPerHost:    0,
-        TLSHandshakeTimeout:     20,
-        ForceAttemptHTTP2:  true,
-    }
-    
+		MaxIdleConns:        0,          // 全局最大空闲连接数
+		MaxIdleConnsPerHost: 2^63-1,           // 每个主机的最大空闲连接数
+		MaxConnsPerHost:    0,
+		TLSHandshakeTimeout:     20,
+		ForceAttemptHTTP2:  true,
+	}
+
 	// 创建一个colly收集器
 	c := colly.NewCollector(
 		// 设置Colly的并发数
 		colly.Async(true), // 启用异步请求
 	)
 	c.WithTransport(transport)
-	
+
 	c.OnResponse(func(res *colly.Response) {
 		if checkSequence(res.Body, field, author) {
 			plid, _ := res.Ctx.GetAny("plid").(int)
@@ -112,9 +112,7 @@ func main() {
 			fmt.Printf("Failed to acquire semaphore: %v", err)
 			break
 		}
-		if (id-num1)%((num2-num1)/100) == 0 {
-			bar.Set(id - num1 - (num2-num1)/100)
-		}
+		bar.Add(1)
 		ctx := colly.NewContext()
 		ctx.Put("plid", id)
 		c.Request(
@@ -129,6 +127,7 @@ func main() {
 	}
 
 	c.Wait()
+	fmt.Println(bar.String())
 	time.Sleep(1 * time.Second)
 	close(dataChan)
 	close(printChan)
