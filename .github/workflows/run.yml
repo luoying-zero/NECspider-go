@@ -9,7 +9,7 @@ on:
       parallelism:
         required: false
         type: string
-        default: "500"
+        default: "700"
       begin_id:
         required: true
         type: string
@@ -31,4 +31,5 @@ jobs:
     - name: Go run
       run: |
         go mod tidy
-        go run main.go -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}}
+        go run -pgo=auto main.go -p 700 1 10000
+        go run -gcflags="-l=4" -ldflags="-s -w -linkmode=internal" -pgo=cpu.pprof main.go -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}}
