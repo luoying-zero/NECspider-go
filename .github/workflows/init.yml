@@ -19,7 +19,7 @@ jobs:
 
     - name: init mod
       run: |
-        # go mod init luoying/Colly-for-NetCloud
+        set +e
         go fmt main.go
         go mod tidy
 

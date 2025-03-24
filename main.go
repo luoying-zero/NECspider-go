@@ -136,7 +136,7 @@ func main() {
 
 	// for _, id := range sli {
 		// fmt.Printf("\"https://music.163.com/playlist?id=%d\",", id)
-	}
+	//}
 	// fmt.Printf("\n")
 	// for _, id := range sli {
 		// fmt.Printf("\"https://music.lliiiill.com/playlist/%d\",", id)
