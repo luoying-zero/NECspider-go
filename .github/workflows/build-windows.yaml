@@ -24,7 +24,7 @@ jobs:
           CXX: x86_64-w64-mingw32-g++
         run: |
           go mod tidy
-          go build -ldflags "-w -s -linkmode=external -extldflags=-static" -o "NECspider-go_amd64.exe"
+          GOAMD64=v3 go build -ldflags "-w -s -linkmode=external -extldflags=-static" -trimpath -o "NECspider-go_amd64.exe"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
