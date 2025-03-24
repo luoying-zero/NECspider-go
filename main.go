@@ -131,7 +131,7 @@ func main() {
 	}
 
 	c.Wait()
-	fmt.Fprintln(os.Stderr, bar.String())
+	fmt.Fprintf(os.Stderr, "%+v", bar.State())
 	time.Sleep(1 * time.Second)
 	close(dataChan)
 	close(printChan)
