@@ -94,7 +94,7 @@ func main() {
 	// 错误处理
 	c.OnError(func(r *colly.Response, err error) {
 		q := r.Request
-		retriesLeft := 10
+		retriesLeft := 5
 		if x, ok := q.Ctx.GetAny("retriesLeft").(int); ok {
 			retriesLeft = x
 		}
