@@ -30,8 +30,8 @@ func main() {
 		return
 	}
 
-	num1, err1 := strconv.Atoi(flag.Args()[0])
-	num2, err2 := strconv.Atoi(flag.Args()[1])
+	num1, err1 := strconv.ParseInt(flag.Arg(0), 0, 64)
+	num2, err2 := strconv.ParseInt(flag.Arg(1), 0, 64)
 	if err1 != nil || err2 != nil {
 		fmt.Fprintln(os.Stderr, "范围必须为整数")
 		return
@@ -55,7 +55,7 @@ func main() {
 	ctx := context.TODO()
 	sem := semaphore.NewWeighted(pam)
 
-	bar := progressbar.DefaultSilent(int64(num2 - num1 + 1))
+	bar := progressbar.DefaultSilent(num2 - num1 + 1)
 
 	transport := &http.Transport{
 		MaxIdleConns:        0,          // 全局最大空闲连接数
@@ -118,7 +118,7 @@ func main() {
 		c.Request(
 			"POST", 
 			"http://music.163.com/api/v6/playlist/detail", 
-			strings.NewReader("id="+strconv.Itoa(id)), 
+			strings.NewReader("id="+strconv.FormatInt(id, 10)), 
 			ctx, 
 			http.Header{
 				"Content-Type": []string{"application/x-www-form-urlencoded"},
