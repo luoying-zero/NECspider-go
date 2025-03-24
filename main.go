@@ -57,8 +57,8 @@ func main() {
 
 	bar := progressbar.NewOptions(
 		num2 - num1 + 1,
-		OptionShowElapsedTimeOnFinish(),
-		OptionSetVisibility(false),
+		progressbar.OptionShowElapsedTimeOnFinish(),
+		progressbar.OptionSetVisibility(false),
 	)
 
 	transport := &http.Transport{
