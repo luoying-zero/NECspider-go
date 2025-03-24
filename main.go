@@ -55,7 +55,11 @@ func main() {
 	ctx := context.TODO()
 	sem := semaphore.NewWeighted(int64(pam))
 
-	bar := progressbar.DefaultSilent(int64(num2 - num1 + 1))
+	bar := progressbar.NewOptions(
+		num2 - num1 + 1,
+		OptionShowElapsedTimeOnFinish(),
+		OptionSetVisibility(false),
+	)
 
 	transport := &http.Transport{
 		MaxIdleConns:        0,          // 全局最大空闲连接数
@@ -65,10 +69,8 @@ func main() {
 		TLSHandshakeTimeout:     20,
 	}
 
-	// 创建一个colly收集器
 	c := colly.NewCollector(
-		// 设置Colly的并发数
-		colly.Async(true), // 启用异步请求
+		colly.Async(true),
 	)
 	c.WithTransport(transport)
 
