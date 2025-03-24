@@ -34,7 +34,8 @@ jobs:
       run: |
         set +e
         go mod tidy
-        go run -gcflags="-l=4" -ldflags="-s -w" main.go -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}} > plid.txt
+        go build -ldflags="-s -w" -o NECspider
+        ./NECspider -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}} > plid.txt
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
