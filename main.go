@@ -38,7 +38,7 @@ func main() {
 	}
 
 	dataChan := make(chan int, 100)
-	var sli []int
+	//var sli []int
 	go func() {
 		for num := range dataChan {
 			//sli = append(sli, num)
