@@ -11,11 +11,13 @@ on:
         type: string
         default: "700"
       begin_id:
-        required: true
+        required: false
         type: string
+        default: "400000000"
       end_id:
-        required: true
+        required: false
         type: string
+        default: "400050000"
 
 jobs:
   collying:
@@ -30,5 +32,12 @@ jobs:
 
     - name: Go run
       run: |
+        set +e
         go mod tidy
-        go run -gcflags="-l=4" -ldflags="-s -w" main.go -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}}
+        go run -gcflags="-l=4" -ldflags="-s -w" main.go -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}} > plid.txt
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: plid
+        path: plid.txt

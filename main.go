@@ -9,6 +9,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 	"golang.org/x/sync/semaphore"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -25,28 +26,29 @@ func main() {
 
 	// 处理位置参数（非标志参数）
 	if len(flag.Args()) < 2 {
-		fmt.Println("缺少范围")
+		fmt.Fprintln(os.Stderr, "缺少范围")
 		return
 	}
 
 	num1, err1 := strconv.Atoi(flag.Args()[0])
 	num2, err2 := strconv.Atoi(flag.Args()[1])
 	if err1 != nil || err2 != nil {
-		fmt.Println("范围必须为整数")
+		fmt.Fprintln(os.Stderr, "范围必须为整数")
 		return
 	}
 
-	dataChan := make(chan int, 10)
+	dataChan := make(chan int, 100)
 	var sli []int
 	go func() {
 		for num := range dataChan {
-			sli = append(sli, num)
+			//sli = append(sli, num)
+			fmt.Printf("\"https://music.lliiiill.com/playlist/%d\",", num)
 		}
 	}()
-	printChan := make(chan string, 10)
+	printChan := make(chan string, 100)
 	go func() {
 		for msg := range printChan {
-			fmt.Println(msg)
+			fmt.Fprintln(os.Stderr, msg)
 		}
 	}()
 
@@ -109,7 +111,7 @@ func main() {
 	// 遍历指定的id范围
 	for id := num1; id <= num2; id++ {
 		if err := sem.Acquire(ctx, 1); err != nil {
-			fmt.Printf("Failed to acquire semaphore: %v", err)
+			fmt.Fprintf(os.Stderr, "Failed to acquire semaphore: %v", err)
 			break
 		}
 		bar.Add(1)
@@ -127,18 +129,18 @@ func main() {
 	}
 
 	c.Wait()
-	fmt.Println(bar.String())
+	fmt.Fprintln(os.Stderr, bar.String())
 	time.Sleep(1 * time.Second)
 	close(dataChan)
 	close(printChan)
 
-	for _, id := range sli {
-		fmt.Printf("\"https://music.163.com/playlist?id=%d\",", id)
+	// for _, id := range sli {
+		// fmt.Printf("\"https://music.163.com/playlist?id=%d\",", id)
 	}
-	fmt.Printf("\n")
-	for _, id := range sli {
-		fmt.Printf("\"https://music.lliiiill.com/playlist/%d\",", id)
-	}
+	// fmt.Printf("\n")
+	// for _, id := range sli {
+		// fmt.Printf("\"https://music.lliiiill.com/playlist/%d\",", id)
+	// }
 }
 
 func checkSequence(s, sub1, sub2 []byte) bool {
