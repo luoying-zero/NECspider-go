@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	var pam int
+	var pam int64
 	field := []byte{0x22, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x3a}
 	author := []byte{0x36, 0x32, 0x36, 0x39, 0x36, 0x32, 0x38, 0x39, 0x2c}
 	flag.IntVar(&pam, "p", 500, "设置并发量")
@@ -53,13 +53,9 @@ func main() {
 	}()
 
 	ctx := context.TODO()
-	sem := semaphore.NewWeighted(int64(pam))
+	sem := semaphore.NewWeighted(pam)
 
-	bar := progressbar.NewOptions(
-		num2 - num1 + 1,
-		progressbar.OptionShowElapsedTimeOnFinish(),
-		progressbar.OptionSetVisibility(false),
-	)
+	bar := progressbar.DefaultSilent(int64(num2 - num1 + 1))
 
 	transport := &http.Transport{
 		MaxIdleConns:        0,          // 全局最大空闲连接数
