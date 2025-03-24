@@ -42,7 +42,7 @@ func main() {
 	go func() {
 		for num := range dataChan {
 			//sli = append(sli, num)
-			fmt.Printf("\"https://music.lliiiill.com/playlist/%d\",", num)
+			fmt.Printf("\"https://music.lliiiill.com/playlist/%d\",\n", num)
 		}
 	}()
 	printChan := make(chan string, 100)
