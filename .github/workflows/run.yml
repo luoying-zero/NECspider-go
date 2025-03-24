@@ -34,8 +34,8 @@ jobs:
       run: |
         set +e
         go mod tidy
-        go build -ldflags="-s -w" -o NECspider
-        ./NECspider -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}} > plid.txt
+        GOAMD64=v4 go build -ldflags="-s -w" -trimpath -o NECspider
+        GOGC=-1 ./NECspider -p ${{inputs.parallelism}} -- ${{inputs.begin_id}} ${{inputs.end_id}} > plid.txt
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
