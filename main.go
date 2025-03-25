@@ -37,7 +37,7 @@ func main() {
 		return
 	}
 
-	dataChan := make(chan int, 100)
+	dataChan := make(chan int64, 100)
 	//var sli []int
 	go func() {
 		for num := range dataChan {
