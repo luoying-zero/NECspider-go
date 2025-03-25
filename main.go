@@ -100,7 +100,7 @@ func main() {
 			q.Ctx.Put("retriesLeft", retriesLeft-1)
 			q.Retry()
 		} else {
-			plid, _ := r.Ctx.GetAny("plid").(int)
+			plid, _ := r.Ctx.GetAny("plid").(int64)
 			printChan <- fmt.Sprintf("Error plid: %v %v", plid, err)
 			sem.Release(1)
 		}
