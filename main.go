@@ -73,7 +73,7 @@ func main() {
 	c.OnResponse(func(res *colly.Response) {
 	    sem.Release(1)
 		if checkSequence(res.Body, field, author) {
-			plid, _ := res.Ctx.GetAny("plid").(int)
+			plid, _ := res.Ctx.GetAny("plid").(int64)
 			dataChan <- plid
 		}
 	})
